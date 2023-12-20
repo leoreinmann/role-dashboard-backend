@@ -1,8 +1,8 @@
 import { Role, RoleId, Permission, PermissionId, RoleService } from '../interfaces/RoleAndPermissionTypes';
 
 export class RoleServiceImpl implements RoleService {
-    private roles: Role[]; // Replace with your data source
-    private permissions: Permission[]; // Replace with your data source
+    private roles: Role[]; 
+    private permissions: Permission[]; 
 
     constructor() {
         this.roles = [
@@ -43,14 +43,18 @@ export class RoleServiceImpl implements RoleService {
         return this.permissions;
     }
 
-    async setPermissionsForRole(roleId: RoleId, permissions: Permission[]): Promise<Role> {
-        // Logic to update permissions of a role
-        const role = this.roles.find(role => role.id === roleId);
-        if (role) {
-            role.permissions = permissions;
-            return role;
-        } else {
+    async setPermissionsForRole(roleId: RoleId, permissionIds: PermissionId[]): Promise<Role> {
+        if (!permissionIds) {
+            throw new Error('Permission IDs not provided');
+        }
+        const role = this.roles.find(r => r.id === roleId);
+        if (!role) {
             throw new Error('Role not found');
         }
+    
+        const updatedPermissions = this.permissions.filter(p => permissionIds.includes(p.id));
+        role.permissions = updatedPermissions;
+        
+        return role;
     }
 }

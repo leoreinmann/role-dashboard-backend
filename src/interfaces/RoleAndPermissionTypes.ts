@@ -17,6 +17,6 @@ export interface RoleService {
   getPermissions(): Promise<Permission[]>;
   setPermissionsForRole(
     roleId: RoleId,
-    permissions: Permission[]
+    permissionIds: PermissionId[] 
   ): Promise<Role>;
 }
