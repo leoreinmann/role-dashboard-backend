@@ -31,9 +31,14 @@ router.get('/roles/permissions', async (req: Request, res: Response) => {
 
 router.post('/roles/:roleId/permissions', async (req: Request, res: Response) => {
     const { roleId } = req.params;
-    const permissions = req.body; 
-    const updatedRole = await roleService.setPermissionsForRole(roleId, permissions);
-    res.json(updatedRole);
+    const permissions = req.body;
+    try {
+        const updatedRole = await roleService.setPermissionsForRole(roleId, permissions);
+        res.json(updatedRole);
+    } catch (error) {
+        console.error(error);
+        res.status(404).json({ message: 'Internal Server Error' });
+    }
 });
 
 export default router;
